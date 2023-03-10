@@ -3,7 +3,7 @@ import multer from 'multer';
 import mongoose from 'mongoose';
 import cors from 'cors';
 
-import { registerValidation, loginValidation, postCreateValidation } from './validations.js';
+import { registerValidation, loginValidation, postCreateValidation, commentCreateValidation } from './validations.js';
 
 import { handleValidationErrors, checkAuth } from './utils/index.js';
 import { UserController, PostController } from './controllers/index.js';
@@ -48,7 +48,7 @@ app.post('/posts', checkAuth, postCreateValidation, handleValidationErrors, Post
 app.delete('/posts/:id', checkAuth, PostController.remove);
 app.patch('/posts/:id', checkAuth, handleValidationErrors, PostController.update);
 
-app.post('/posts/:id/comments', checkAuth, handleValidationErrors, PostController.addComment);
+app.post('/posts/:id/comments', checkAuth, commentCreateValidation, handleValidationErrors, PostController.addComment);
 
 app.listen(4444, (err) => {
   if (err) {
