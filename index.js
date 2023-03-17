@@ -8,6 +8,7 @@ import { registerValidation, loginValidation, postCreateValidation, commentCreat
 import { handleValidationErrors, checkAuth } from './utils/index.js';
 import { UserController, PostController } from './controllers/index.js';
 
+// TODO: need to create config with keys
 mongoose
   .connect(
     'mongodb+srv://Kirill:nagibator2003@cluster0.dnjposm.mongodb.net/blog?retryWrites=true&w=majority',
