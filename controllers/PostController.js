@@ -95,7 +95,7 @@ export const addComment = async (req, res) => {
     }
 
     await PostModel.findOneAndUpdate({
-      _id: postId,
+      id: postId,
       $push: {comments: comment},
       new: true
     }).populate('user').populate('comments.user');
