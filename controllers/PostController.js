@@ -1,3 +1,4 @@
+import CommentModel from "../models/Comment.js";
 import PostModel from '../models/Post.js';
 import UserModel from '../models/User.js';
 
@@ -89,16 +90,21 @@ export const remove = async (req, res) => {
 export const addComment = async (req, res) => {
   try {
     const postId = req.params.id;
-    const comment = {
+    const user = await UserModel.findById(req.userId);
+    const comment = new CommentModel({
       text: req.body.text,
-      user: req.userId
-    }
+      user: req.userId,
+      fullName: user.fullName
+    })
 
-    await PostModel.findOneAndUpdate({
-      id: postId,
-      $push: {comments: comment},
-      new: true
-    }).populate('user').populate('comments.user');
+    await comment.save();
+    await PostModel.findOneAndUpdate(
+        {
+          _id: postId,
+        },
+        {
+          $push: {comments: comment}
+        }).populate('user').populate({ path: 'comments', populate: { path: 'user' } });
 
     res.json({
       success: 'Comment added',
