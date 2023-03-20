@@ -53,6 +53,20 @@ export const getOne = async (req, res) => {
   }
 };
 
+export const getByUser = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const posts = await PostModel.find({ user: userId }).populate('user').exec();
+    res.json(posts);
+  }
+  catch (err) {
+    console.log(err);
+    res.status(500).json({
+      message: 'Posts not found',
+    });
+  }
+}
+
 export const remove = async (req, res) => {
   try {
     const postId = req.params.id;
@@ -129,9 +143,9 @@ export const create = async (req, res) => {
 
     const post = await doc.save();
 
-    const user = await UserModel.findById(req.userId);
-    user.posts.push(post);
-    await user.save();
+    // const user = await UserModel.findById(req.userId);
+    // user.posts.push(post);
+    // await user.save();
 
     res.json(post);
   } catch (err) {
