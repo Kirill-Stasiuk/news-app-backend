@@ -1,6 +1,7 @@
 import CommentModel from "../models/Comment.js";
 import PostModel from '../models/Post.js';
 import UserModel from '../models/User.js';
+import fileLoader from "../utils/fileLoader.js";
 
 export const getAll = async (req, res) => {
   try {
@@ -133,10 +134,11 @@ export const addComment = async (req, res) => {
 
 export const create = async (req, res) => {
   try {
+    const fileName = fileLoader.saveFile(req.files.imageUrl);
     const doc = new PostModel({
       title: req.body.title,
       text: req.body.text,
-      imageUrl: req.body.imageUrl,
+      imageUrl: fileName,
       user: req.userId,
     });
 
@@ -154,6 +156,7 @@ export const create = async (req, res) => {
 export const update = async (req, res) => {
   try {
     const postId = req.params.id;
+    const fileName = fileLoader.saveFile(req.files.imageUrl);
 
     await PostModel.updateOne(
       {
@@ -162,7 +165,7 @@ export const update = async (req, res) => {
       {
         title: req.body.title,
         text: req.body.text,
-        imageUrl: req.body.imageUrl,
+        imageUrl: fileName,
         user: req.userId,
       },
     );
