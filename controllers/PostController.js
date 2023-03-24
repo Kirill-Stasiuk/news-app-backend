@@ -138,14 +138,9 @@ export const create = async (req, res) => {
       text: req.body.text,
       imageUrl: req.body.imageUrl,
       user: req.userId,
-      comments: req.body.comments
     });
 
     const post = await doc.save();
-
-    // const user = await UserModel.findById(req.userId);
-    // user.posts.push(post);
-    // await user.save();
 
     res.json(post);
   } catch (err) {
@@ -169,7 +164,6 @@ export const update = async (req, res) => {
         text: req.body.text,
         imageUrl: req.body.imageUrl,
         user: req.userId,
-        tags: req.body.tags,
       },
     );
 
